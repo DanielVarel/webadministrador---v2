@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>On-Going || Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/estilos-clientes.css">
+    <script src="https://kit.fontawesome.com/04db09d270.js" crossorigin="anonymous"></script>
+     <script src="https://kit.fontawesome.com/54de7e7a33.js" crossorigin="anonymous"></script>
+</head>
+<body> 
+    <div class="main">
+        <div class="header">
+            <div class="logo">
+                <img  height="30%" src="assets/img/logillo final.png" alt="">
+            </div>
+        </div>
+        <div class="container">
+            <div class="menuColumn">
+                <div class="itemList"><i class="fa-solid fa-sidebar"></i><span>Orders</span></div>
+                <div class="itemList"><span>Clients</span></div>
+                <div class="itemList"><i class="fa-sharp fa-regular fa-moped"></i><span>Dealers</span></div>
+                <div class="itemList"><span>Stores</span></div>
+            </div>
+            <div class="frames">
+                <iframe id="ordenes" src="ordenes.html" frameborder="0"></iframe>
+                <iframe id="clientes" src="clientes.html" frameborder="0"></iframe>
+                <iframe id="repartidores" src="repartidores.html" frameborder="0"></iframe>
+                <iframe id="tiendas" src="tiendas.html" frameborder="0"></iframe>
+
+             
+
+               <div class="contenedor">
+                    <div class="seccion-repartidores" id="seccion-repartidores">
+                        <!-- <div class="card">
+                                
+                            <TABLE BORDER>
+                                <TR class="detalles-tabla">
+                                    <TH></TH><TH>ID</TH> <TH>Name</TH> <TH>Email</TH> <TH>Phone number</TH> <TH>Verified</TH>
+                                </TR>
+                                <TR class="detalles-tabla">
+                                    <TD class="checkbox-tama"><div class="checkbox-apple"><input class="yep" id="check-apple" type="checkbox"><label for="check-apple"></label></div></TD><TD>1234567</TD><TD><div class="tabla-repartidor"><img src="assets/img/repartidor2.jpeg" class="img-repartidor"><p>Javier Perez</p></div></TD><TD>daniel.avila@gamil.com</TD> <TD>123456789</TD><TD class="botones"><button class="boton-true">True</button><button class="boton-false">False</button></TD>
+                                </TR>
+                                
+                            </TABLE> 
+                         </div> -->
+                    </div>
+                    
+                    
+                      
+                       
+
+                </div>
+               </div>               
+            </div>
+        </div>
+   
+        <div id="miVentanaModal" class="modal">
+            <div class="modal-contenido">
+              <span class="cerrar">&times;</span>
+                <h2>Customer details</h2>
+                <div class="contenedor-modal">
+                    <div class="modal-img">
+                        <img src="assets/img/repartidor1.jpeg" alt="">
+                    </div>
+                    <div class="modal-inf">
+                        <p><i class="fa-solid fa-user"></i> Daniel Avila</p>
+                        <p><i class="fa-solid fa-id-card-clip"></i> 12345557</p>
+                        <p><i class="fa-solid fa-envelope"></i> daniel.avila.a.v.2000@gmail.com</p>
+                        <p><i class="fa-solid fa-phone"></i> 123456789</p>
+                    </div>
+                    <div class="botones">
+                        <div>
+                            <button>Validate</button>
+                        </div>
+                        <div>
+                            <button>Deny</button>
+                        </div>
+                        <div>
+                            <button>Delete</button>
+                        </div>
+                        <div>
+                            <button>Update</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <script src="assets/js/codigo-clientes.js"></script>
+</body>
+</html>
