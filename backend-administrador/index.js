@@ -3,6 +3,7 @@ var bodyParse = require('body-parser');
 var cors = require('cors');
 
 var repartidoresRouter = require('./routers/repartidores.router');
+var ordenesRouter = require('./routers/ordenes.router');
 
 var database = require('./modules/database')
 
@@ -13,6 +14,7 @@ app.use(bodyParse.json());
 app.use(bodyParse.urlencoded({extended:true}));
 
 app.use('/repartidores',  repartidoresRouter)
+app.use('/ordenes', ordenesRouter)
 
 app.get('/',function(req,res){
     res.send('Servidor en linea')

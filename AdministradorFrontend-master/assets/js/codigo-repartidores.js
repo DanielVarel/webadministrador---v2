@@ -55,7 +55,7 @@ function abrirVentanaModal(id) {
                                               <h2>Biker details</h2>
                                               <div class="contenedor-modal">
                                                   <div class="modal-img">
-                                                      <img src="assets/img/repartidor1.jpeg" alt="">
+                                                      <img src="assets/img/repartidor3.jpeg" alt="">
                                                   </div>
                                                   <div class="modal-inf">
                                                       <p><i class="fa-solid fa-user"></i> ${repartidoresRegistrados[id].name}</p>
@@ -126,3 +126,27 @@ var botonCerrar = document.getElementsByClassName("cerrar")[0];
 botonCerrar.onclick = function() {
   miVentanaModal.style.display = "none";
 }
+
+
+
+
+
+
+// // Obtener elementos del DOM para actualizar
+// const openModalBtn1 = document.getElementById('open-modal-btn1');
+// const closeModalBtn1 = document.getElementById('close-modal-btn1');
+// const modalContainer1 = document.getElementById('modal-container1');
+
+// // Función para abrir el modal
+// function openModal() {
+//   modalContainer1.style.display = 'block';
+// }
+
+// // Función para cerrar el modal
+// function closeModal() {
+//   modalContainer1.style.display = 'none';
+// }
+
+// // Agregar eventos a los botones
+// openModalBtn1.addEventListener('click', openModal);
+// closeModalBtn1.addEventListener('click', closeModal);

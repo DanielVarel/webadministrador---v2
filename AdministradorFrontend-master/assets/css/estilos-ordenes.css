@@ -106,7 +106,8 @@ nav .indicador{
     height: 100%;
     overflow: auto;
     background-color: rgba(0,0,0,0.4);
-     font-family: 'Manrope', sans-serif;
+    font-family: 'Manrope', sans-serif;
+    min-width: 1100px;
   }
   
   .modal-contenido {
