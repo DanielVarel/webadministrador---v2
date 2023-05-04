@@ -1,32 +1,36 @@
+var repartidoresRegistrados = [];
 
-var usuarioRegistrados = [
-    {
-        id: "1234567",
-        name: "Daniel Avila", 
-        email: "daniel.avila.a.v.2000@gmail.com",
-        password: "12",
-        phoneNumber: "123456789",
-        verificado: true 
-    },{
-        id: "2234568",
-        name: "Alejandro Avila", 
-        email: "alejandro.2000@gamil.com",
-        password: "23",
-        phoneNumber: "123409987",
-        verificado:  false
-    }
-];
+function  obtenerRepartidorese(){
+    fetch(`http://localhost:8888/repartidores`, {
+        method: 'get',
+        headers: {"Content-Type": "application/json"},
+      })
+    .then((respuesta) => respuesta.json())
+    .then((datos) => {
+        repartidoresRegistrados = datos;
+        mostrarRepartidores()
+    })
+    .catch(error => {
+            console.log(error)
+    }); 
+}
 
-
+obtenerRepartidorese();
 
 function mostrarRepartidores(){
     let tabla = ``;
-    let verificado = true;
+    let verificado = ``;
+    for(let i=0; i<repartidoresRegistrados.length; i++){
 
-    for(let i=0; i<usuarioRegistrados.length; i++){
+        if(repartidoresRegistrados[i].authenticated == true){
+            verificado = `<i class="fa-solid fa-check"></i>`;            
+        }else{
+            verificado = `<i class="fa-solid fa-x"></i>`;            
+        }
 
-        tabla += ` <TR class="detalles-tabla" onclick="abrirVentanaModal()">
-                    <TD class="checkbox-tama"><div class="checkbox-apple"><input class="yep" id="check-apple" type="checkbox"><label for="check-apple"></label></div></TD><TD>${usuarioRegistrados[i].id}</TD><TD><p>${usuarioRegistrados[i].name}</p></TD><TD>${usuarioRegistrados[i].email}</TD> <TD>${usuarioRegistrados[i].phoneNumber}</TD><TD class="botones" id="botones"><i class="fa-solid fa-check"></i></TD>
+
+        tabla += ` <TR class="detalles-tabla" onclick="abrirVentanaModal(${i})">
+                    <TD class="checkbox-tama"><div class="checkbox-apple"><input class="yep" id="check-apple" type="checkbox"><label for="check-apple"></label></div></TD><TD>${repartidoresRegistrados[i]._id}</TD><TD><p>${repartidoresRegistrados[i].name}</p></TD><TD>${repartidoresRegistrados[i].email}</TD> <TD>${repartidoresRegistrados[i].phoneNumber}</TD><TD class="botones" id="botones">${verificado}</TD>
                  </TR>`;                 
     }
 
@@ -40,15 +44,75 @@ function mostrarRepartidores(){
                                                             </div>`;
 }
 
-mostrarRepartidores();
-
-
 var miVentanaModal = document.getElementById("miVentanaModal");
 
 // Abre la ventana modal
-function abrirVentanaModal() {
+function abrirVentanaModal(id) {
   miVentanaModal.style.display = "block";
+
+  document.getElementById("miVentanaModal").innerHTML = `<div class="modal-contenido">
+                                            <span class="cerrar" id="cerrar">&times;</span>
+                                              <h2>Biker details</h2>
+                                              <div class="contenedor-modal">
+                                                  <div class="modal-img">
+                                                      <img src="assets/img/repartidor1.jpeg" alt="">
+                                                  </div>
+                                                  <div class="modal-inf">
+                                                      <p><i class="fa-solid fa-user"></i> ${repartidoresRegistrados[id].name}</p>
+                                                      <p><i class="fa-solid fa-id-card-clip"></i>${repartidoresRegistrados[id]._id}</p>
+                                                      <p><i class="fa-solid fa-envelope"></i> ${repartidoresRegistrados[id].email}</p>
+                                                      <p><i class="fa-solid fa-phone"></i>${repartidoresRegistrados[id].phoneNumber}</p>
+                                                  </div>
+                                                  <div class="botones">
+                                                      <div>
+                                                          <button onclick="validarRepartidor('${repartidoresRegistrados[id]._id}')">Validate</button>
+                                                      </div>
+                                                      <div>
+                                                          <button>Deny</button>
+                                                      </div>
+                                                      <div>
+                                                          <button onclick="eliminarRepartidor('${repartidoresRegistrados[id]._id}')">Delete</button>
+                                                      </div>
+                                                      <div>
+                                                          <button>Update</button>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>`
+
+
 }
+
+// eliminar repartidor
+function eliminarRepartidor(id){
+    fetch(`http://localhost:8888/repartidores/${id}`, {
+        method: 'delete',
+        headers: {"Content-Type": "application/json"},
+      })
+    .then((respuesta) => respuesta.json())
+    .then((datos) => {
+        console.log(datos);
+        location.reload(true);
+    })
+    .catch(error => {
+            console.log(error)
+    }); 
+}
+
+// validar repartidor
+function  validarRepartidor(id){
+    fetch(`http://localhost:8888/repartidores/${id}`, {
+        method: 'PUT',
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify()
+        })
+        .then((respuesta) => respuesta.json())
+        .then((datos) => {
+            console.log('Se actualizo correctamente', datos);
+        })
+        .catch(error => console.log(error));  
+}
+
 
 // Cierra la ventana modal cuando se hace clic afuera de ella
 window.onclick = function(event) {
@@ -57,7 +121,7 @@ window.onclick = function(event) {
   }
 }
 
-// Cierra la ventana modal cuando se hace clic en el botón de cerrar
+//Cierra la ventana modal cuando se hace clic en el botón de cerrar
 var botonCerrar = document.getElementsByClassName("cerrar")[0];
 botonCerrar.onclick = function() {
   miVentanaModal.style.display = "none";

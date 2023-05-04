@@ -42,8 +42,10 @@ var ordenes = [
         id: "1233552",
         imgCustomer: "assets/img/usuario1.jpeg",
         nameCustomer: "Daniel Avila",
+        idCustomer: "123123",
         imgDealers: "assets/img/repartidor1.jpeg",
         nameDealers: "Javier Perez",
+        idDealers: "123123123",
         direccion: "Tegucigalpa, Los Pinos",
         quantityProducts:  "2",
         price: "$45.4"
