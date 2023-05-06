@@ -71,22 +71,21 @@
             <div class="modal-contenido-1">
               <span class="cerrar-1">&times;</span>
                 <h2>Add product</h2>
-                <form>
+                <form id="form">
                     <label for="nombre">Name:</label>
                     <input type="text" id="nombre" name="nombre" required>
                     
-                    <label for="imagen">Selecciona una imagen:</label>
-                    <input type="file" id="imagen" name="imagen" accept="image/*">
-                    <img id="preview" src="#" alt="Imagen seleccionada">
-
-                    <label for="precio">Price:</label>
+                    <label for="imagen">Agregar enlace de imagen:</label>
+                    <input type="text" id="imagen" name="imagen">
+                    
+                    <label for="precio">Precio:</label>
                     <input type="text" id="precio" name="precio" required>
                     
-                    <label for="mensaje">Message:</label>
+                    <label for="mensaje">Descripcion:</label>
                     <textarea id="mensaje" name="mensaje" required></textarea>
                     
                                         
-                    <input type="submit" value="Enviar">
+                    <button type="submit">Agregar</button>
                 </form>
             </div>
         </div>

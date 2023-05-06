@@ -46,7 +46,7 @@ function abrirVentanaModal(id) {
                       <h2>${tiendas[id].productos[i].name}</h2>
                       <img src="${tiendas[id].productos[i].imagen}" alt="">
                       <p>${tiendas[id].productos[i].descripcion}</p>
-                      <p>$10</p>
+                      <p>Lps.${tiendas[id].productos[i].precio}</p>
                   </div>`
   }
 
@@ -64,7 +64,7 @@ function abrirVentanaModal(id) {
                                                                   </div>
                                                                   <div class="botones">
                                                                       <div>
-                                                                          <button onclick="abrirVentanaModalProducto()">Add product</button>
+                                                                          <button onclick="abrirVentanaModalProducto('${tiendas[id]._id}')">Add product</button>
                                                                       </div>
                                                                       <div>
                                                                           <button>Delete</button>
@@ -97,20 +97,58 @@ window.onclick = function(event) {
 }
 
 // Cierra la ventana modal cuando se hace clic en el botón de cerrar
-var botonCerrar1 = document.getElementsByClassName("cerrar")[0];
-botonCerrar1.onclick = function() {
-  miVentanaModal.style.display = "none";
-}
+// var botonCerrar1 = document.getElementsByClassName("cerrar")[0];
+// botonCerrar1.onclick = function() {
+//   miVentanaModal.style.display = "none";
+// }
 
 // modal  para agragar producto
 
 var miVentanaModalProducto = document.getElementById("miVentanaModalProducto");
 
 // Abre la ventana modal
-function abrirVentanaModalProducto() {
+function abrirVentanaModalProducto(id) {
   miVentanaModalProducto.style.display = "block";
-  console.log('abrir modal');
+  console.log(id)
+  agragarProducto(id)
 }
+
+
+function agragarProducto(id){
+  
+  form.addEventListener("submit", e=>{
+    console.log('a esta tienda:', id)
+    e.preventDefault();
+  
+    var name = document.getElementById("nombre").value;
+    var imagenn = document.getElementById("imagen").value;
+    var price = document.getElementById("precio").value;
+    var descripcion = document.getElementById("mensaje").value;
+    
+    u ={
+        name: name,
+        imagen: imagenn,
+        precio: price,
+        descripcion: descripcion,
+    }
+
+    fetch(`http://localhost:3000/client/store/${id}`, {
+        method: 'PUT',
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(u)
+      })
+    .then((respuesta) => respuesta.json())
+    .then((res) => {
+        console.log(res);
+        document.getElementById("nombre").value = '';
+        document.getElementById("imagen").value = '';
+        document.getElementById("precio").value = '';
+        document.getElementById("mensaje").value = '';
+    });
+    
+  })
+}
+
 
 // Cierra la ventana modal cuando se hace clic afuera de ella
 window.onclick = function(event) {
@@ -155,17 +193,3 @@ botonCerrar.onclick = function() {
 }
 
 
-// para agragar una imagen al producto
-const inputImagen = document.getElementById("imagen");
-const imagenPreview = document.getElementById("preview");
-
-inputImagen.addEventListener("change", function() {
-  const reader = new FileReader();
-
-  reader.onload = function() {
-    imagenPreview.src = reader.result;
-    imagenPreview.style.display = "block";
-  };
-
-  reader.readAsDataURL(this.files[0]);
-});
