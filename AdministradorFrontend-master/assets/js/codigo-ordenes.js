@@ -7,7 +7,7 @@ function mostrarOrdenes(){
     document.getElementById("boton-entregas").style.background = "#fff"
     document.getElementById("boton-cacelados").style.background = "#fff"
 
-    obtenerOrdenes();
+    // obtenerOrdenes();
 
 }
 
@@ -38,7 +38,7 @@ function mostrarCanceladas(){
 var ordenes = [];
 
 function obtenerOrdenes(){
-    fetch(`http://localhost:8888/ordenes/espera`, {
+    fetch(`http://localhost:3000/client/order`, {
     method: 'GET',
     headers: {
       "Content-Type": "application/json",
@@ -77,7 +77,7 @@ function renderizarOrdenes(){
                                                     </div>`;
 }
 
-obtenerOrdenes();
+// obtenerOrdenes();
 
 // Abre la ventana modal para las entregas
 function abrirVentanaModalOrdenes(i){
@@ -118,7 +118,7 @@ function abrirVentanaModalOrdenes(i){
 var entregas = []
 
 function obtenerEntregas(){
-    fetch(`http://localhost:8888/ordenes/entregadas`, {
+    fetch(`http://localhost:3000/client/order`, {
     method: 'GET',
     headers: {
       "Content-Type": "application/json",
@@ -128,17 +128,17 @@ function obtenerEntregas(){
   .then(async (result) => {
     entregas = result;
     console.log(entregas);
-    renderizarEntregas();
+    renderizarEntregas(entregas);
   }); 
 }
 
-function renderizarEntregas(){
+function renderizarEntregas(entrega){
     let ordenesTabla =  ``;
     document.getElementById("seccion-entregas").innerHTML = ``;
 
-    for(let i=0; i<entregas.length; i++){
+    for(let i=0; i<entrega.length; i++){
         ordenesTabla += `<TR class="detalles-tabla" onclick="abrirVentanaModalEntregas(${i})">
-                            <TD class="checkbox-tama"><div class="checkbox-apple"><input class="yep" id="check-apple" type="checkbox"><label for="check-apple"></label></div></TD><TD>${entregas[i].date}</TD> <TD>${entregas[i]._id}</TD> <TD><div class="tabla-usuario"><p>${entregas[i].nombreCliente}</p></div></TD><TD><div class="tabla-repartidor"><p>${entregas[i].nombreRepartidor}</p></div></TD><TD>${entregas[i].direccion}</TD> <TD>${entregas[i].envios.length}</TD><TD>$${entregas[i].precio}</TD>
+                            <TD class="checkbox-tama"><div class="checkbox-apple"><input class="yep" id="check-apple" type="checkbox"><label for="check-apple"></label></div></TD><TD>${entregas[i].date}</TD> <TD>${entregas[i].id}</TD> <TD><div class="tabla-usuario" style="text-align: center;"><p>${entregas[i].client.name}</p></div></TD><TD><div class="tabla-repartidor" style="text-align: center;"><p>${entregas[i].dealer.name}</p></div></TD> <TD>${entregas[i].products.length}</TD><TD>$${entregas[i].total}</TD>                        
                         </TR>`;
     }
 
@@ -148,7 +148,7 @@ function renderizarEntregas(){
                                                     <div class="card">
                                                     <TABLE BORDER>
                                                         <TR>
-                                                            <TH></TH><TH>Date</TH> <TH>Referencia</TH> <TH>Cliente</TH> <TH>Repartidor</TH> <TH>Direccion</TH> <TH>No.Productos</TH> <TH>Cargo</TH>
+                                                            <TH></TH><TH>Date</TH> <TH>Referencia</TH> <TH>Cliente</TH> <TH>Repartidor</TH> <TH>No.Productos</TH> <TH>Cargo</TH>
                                                         </TR>
                                                         <div id="contenedor-ordenes">
                                                             ${ordenesTabla}
@@ -167,20 +167,22 @@ function abrirVentanaModalEntregas(i) {
                                                       <div class="contenedor-modal">
                                                           <div class="modal-info-ordenes">
                                                               <p><samp class="span-orden">Date:</samp> ${entregas[i].date}</p>
-                                                              <p><span class="span-orden">Id:</span> ${entregas[i]._id}</p>
-                                                              <p><span class="span-orden">Location:</span> ${entregas[i].direccion}</p>
-                                                              <p><span class="span-orden">Number of products: </span> ${entregas[i].envios.length}</p>
-                                                              <p><span class="span-orden">Price: </span> $${entregas[i].precio}</p>
+                                                              <p><span class="span-orden">Id:</span> ${entregas[i].id}</p>
+                                                              <p><span class="span-orden">Number of products: </span> ${entregas[i].products.length}</p>
+                                                              <p><span class="span-orden">Price: </span> $${entregas[i].total}</p>
                                                           </div>
                                                           <div class="modal-inf-cliente">
                                                               <h3>Customer</h3>
-                                                              <p><i class="fa-solid fa-user"></i> ${entregas[i].nombreCliente}</p>
-                                                              <p><i class="fa-solid fa-id-card-clip"></i> ${entregas[i].idCliente}</p>
+                                                              <p><i class="fa-solid fa-user"></i> ${entregas[i].client.name}</p>
+                                                              <p><i class="fa-solid fa-id-card-clip"></i> ${entregas[i].client.id}</p>
+                                                              <p><i class="fa-solid fa-envelope"></i> ${entregas[i].client.email}</p>
                                                           </div>
                                                           <div class="modal-inf-repartidor">
                                                               <h3>Dealer</h3>
-                                                              <p><i class="fa-solid fa-user"></i> ${entregas[i].nombreRepartidor}</p>
-                                                              <p><i class="fa-solid fa-id-card-clip"></i> ${entregas[i].idRepartidor}</p>
+                                                              <p><i class="fa-solid fa-user"></i> ${entregas[i].dealer.name}</p>
+                                                              <p><i class="fa-solid fa-id-card-clip"></i> ${entregas[i].dealer.id}</p>
+                                                              <p><i class="fa-solid fa-envelope"></i> ${entregas[i].dealer.email}</p>
+                                                              <p><i class="fa-solid fa-phone"></i>${entregas[i].dealer.tel}</p>
                                                           </div>
                                                           <div class="botones">
                                                               
@@ -200,38 +202,38 @@ function abrirVentanaModalEntregas(i) {
 var enProceso = [];
 
 function obtenerEnProceso(){
-    fetch(`http://localhost:8888/ordenes/camino`, {
-    method: 'GET',
-    headers: {
-      "Content-Type": "application/json",
-    }
-  })
-  .then((respuesta) => respuesta.json())
-  .then(async (result) => {
-    enProceso = result;
-    console.log(enProceso);
-    renderizarEnCamino();
-  }); 
+    fetch(`http://localhost:3000/client/order/pending`, {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json",
+        }
+      })
+      .then((respuesta) => respuesta.json())
+      .then(async (result) => {
+        enProceso = result;
+        console.log(enProceso);
+        renderizarEnCamino(enProceso);
+      }); 
 }
 
 
-function renderizarEnCamino(){
+function renderizarEnCamino(enProces){
     let ordenesTabla =  ``;
     document.getElementById("seccion-cancelado").innerHTML = ``;
 
-    for(let i=0; i<enProceso.length; i++){
-        ordenesTabla += `<TR class="detalles-tabla" onclick="abrirVentanaModalProceso(${i})">
-        <TD class="checkbox-tama"><div class="checkbox-apple"><input class="yep" id="check-apple" type="checkbox"><label for="check-apple"></label></div></TD><TD>${enProceso[i].date}</TD> <TD>${enProceso[i]._id}</TD> <TD><div class="tabla-usuario"><p>${enProceso[i].nombreCliente}</p></div></TD><TD><div class="tabla-repartidor"><p>${enProceso[i].nombreRepartidor}</p></div></TD><TD>${enProceso[i].direccion}</TD> <TD>${enProceso[i].envios.length}</TD><TD>$${enProceso[i].precio}</TD>
+    for(let i=0; i<enProces.length; i++){
+        ordenesTabla += `<TR class="detalles-tabla" onclick="abrirVentanaModalEntregas(${i})">
+                            <TD class="checkbox-tama"><div class="checkbox-apple"><input class="yep" id="check-apple" type="checkbox"><label for="check-apple"></label></div></TD><TD>${enProces[i].date}</TD> <TD>${enProces[i].id}</TD> <TD><div class="tabla-usuario" style="text-align: center;"><p>${enProces[i].client.name}</p></div></TD><TD><div class="tabla-repartidor" style="text-align: center;"><p>${enProces[i].dealer.name}</p></div></TD> <TD>${enProces[i].products.length}</TD><TD>$${enProces[i].total}</TD>                        
                         </TR>`;
     }
 
     
 
-    document.getElementById("seccion-cancelado").innerHTML += `
+    document.getElementById("seccion-entregas").innerHTML += `
                                                     <div class="card">
                                                     <TABLE BORDER>
                                                         <TR>
-                                                            <TH></TH><TH>Date</TH> <TH>Referencia</TH> <TH>Cliente</TH> <TH>Repartidor</TH> <TH>Direccion</TH> <TH>No.Productos</TH> <TH>Cargo</TH>
+                                                            <TH></TH><TH>Date</TH> <TH>Referencia</TH> <TH>Cliente</TH> <TH>Repartidor</TH> <TH>No.Productos</TH> <TH>Cargo</TH>
                                                         </TR>
                                                         <div id="contenedor-ordenes">
                                                             ${ordenesTabla}
@@ -246,38 +248,40 @@ var miVentanaModal = document.getElementById("miVentanaModal");
 function abrirVentanaModalProceso(i) {
   miVentanaModal.style.display = "block";
 
-    document.getElementById('miVentanaModal').innerHTML = ` <div class="modal-contenido">
-                                                    <span class="cerrar">&times;</span>
-                                                    <h2>Delivery details</h2>
-                                                    <div class="contenedor-modal">
-                                                        <div class="modal-info-ordenes">
-                                                            <p><samp class="span-orden">Date:${enProceso[i].date}</samp> </p>
-                                                            <p><span class="span-orden">Id:</span> ${enProceso[i]._id}</p>
-                                                            <p><span class="span-orden">Location:</span> ${enProceso[i].direccion}</p>
-                                                            <p><span class="span-orden">Number of products: </span> ${enProceso[i].envios.length}</p>
-                                                            <p><span class="span-orden">Price: </span> $${enProceso[i].precio}</p>
-                                                        </div>
-                                                        <div class="modal-inf-cliente">
-                                                            <h3>Customer</h3>
-                                                            <p><i class="fa-solid fa-user"></i> ${enProceso[i].nombreCliente}</p>
-                                                            <p><i class="fa-solid fa-id-card-clip"></i> ${enProceso[i].idCliente}</p>
-                                                        </div>
-                                                        <div class="modal-inf-repartidor">
-                                                            <h3>Dealer</h3>
-                                                            <p><i class="fa-solid fa-user"></i> ${enProceso[i].nombreRepartidor}</p>
-                                                            <p><i class="fa-solid fa-id-card-clip"></i> ${enProceso[i].idRepartidor}</p>
-                                                        </div>
-                                                        <div class="botones">
-                                                            
-                                                            <div>
-                                                                <button>Cancel</button>
+  document.getElementById('miVentanaModal').innerHTML = ` <div class="modal-contenido">
+                                                        <span class="cerrar">&times;</span>
+                                                        <h2>Delivery details</h2>
+                                                        <div class="contenedor-modal">
+                                                            <div class="modal-info-ordenes">
+                                                                <p><samp class="span-orden">Date:</samp> ${enProceso[i].date}</p>
+                                                                <p><span class="span-orden">Id:</span> ${enProceso[i].id}</p>
+                                                                <p><span class="span-orden">Number of products: </span> ${enProceso[i].products.length}</p>
+                                                                <p><span class="span-orden">Price: </span> $${enProceso[i].total}</p>
                                                             </div>
-                                                            <div>
-                                                                <button>Update</button>
+                                                            <div class="modal-inf-cliente">
+                                                                <h3>Customer</h3>
+                                                                <p><i class="fa-solid fa-user"></i> ${enProceso[i].client.name}</p>
+                                                                <p><i class="fa-solid fa-id-card-clip"></i> ${enProceso[i].client.id}</p>
+                                                                <p><i class="fa-solid fa-envelope"></i> ${enProceso[i].client.email}</p>
+                                                            </div>
+                                                            <div class="modal-inf-repartidor">
+                                                                <h3>Dealer</h3>
+                                                                <p><i class="fa-solid fa-user"></i> ${enProceso[i].dealer.name}</p>
+                                                                <p><i class="fa-solid fa-id-card-clip"></i> ${enProceso[i].dealer.id}</p>
+                                                                <p><i class="fa-solid fa-envelope"></i> ${enProceso[i].dealer.email}</p>
+                                                                <p><i class="fa-solid fa-phone"></i>${enProceso[i].dealer.tel}</p>
+                                                            </div>
+                                                            <div class="botones">
+                                                                
+                                                                <div>
+                                                                    <button>Cancel</button>
+                                                                </div>
+                                                                <div>
+                                                                    <button>Update</button>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>`;
+                                                    </div>`;
 }
 
 // Cierra la ventana modal cuando se hace clic afuera de ella

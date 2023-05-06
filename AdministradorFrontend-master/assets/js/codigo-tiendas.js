@@ -1,51 +1,92 @@
 
-var empresas = [
-    {
-        id: "1234567",
-        name: "Bigos", 
-        email: "bigos@gmail.com",
-        categoria: "comida",
-        phoneNumber: "123456789",
-    },{
-        id: "2234568",
-        name: "Pizza Hub", 
-        categoria: "comida",
-        email: "hub.pizaa@gmail.com", 
-        phoneNumber: "123409987",
+var tiendas = []
+
+fetch(`http://localhost:3000/client/allStores`, {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
     }
-];
+  })
+  .then((respuesta) => respuesta.json())
+  .then(async (result) => {
+    tiendas = result;
+    console.log(tiendas);
+    mostrarTiendas(tiendas);
+}); 
 
-
-
-function mostrarRepartidores(){
+function mostrarTiendas(stores){
     let tabla = ``;
-    let verificado = true;
+  
+    for(let i=0; i<stores.length; i++){
 
-    for(let i=0; i<empresas.length; i++){
-
-        tabla += ` <TR class="detalles-tabla" onclick="abrirVentanaModal()">
-                    <TD class="checkbox-tama"><div class="checkbox-apple"><input class="yep" id="check-apple" type="checkbox"><label for="check-apple"></label></div></TD><TD>${empresas[i].id}</TD><TD><p>${empresas[i].name}</p></TD><TD><p>${empresas[i].categoria}</p></TD><TD>${empresas[i].email}</TD> <TD>${empresas[i].phoneNumber}</TD>
+        tabla += ` <TR class="detalles-tabla" onclick="abrirVentanaModal(${i})">
+                    <TD class="checkbox-tama"><div class="checkbox-apple"><input class="yep" id="check-apple" type="checkbox"><label for="check-apple"></label></div></TD><TD>${stores[i]._id}</TD><TD><p>${stores[i].name}</p></TD><TD><p>${stores[i].idCategoria}</p></TD><TD><p>${stores[i].productos.length}</p></TD>
                  </TR>`;                 
     }
 
     document.getElementById("seccion-repartidores").innerHTML = ` <div class="card">    
                                                                 <TABLE BORDER>
                                                                     <TR class="detalles-tabla">
-                                                                        <TH></TH><TH>ID</TH> <TH>Name</TH> <TH>Category</TH> <TH>Email</TH> <TH>Phone number</TH>
+                                                                        <TH></TH><TH>ID</TH> <TH>Name</TH> <TH>Id Category</TH> <TH>Quantity of Products</TH>
                                                                     </TR>
                                                                     ${tabla} 
                                                                 </TABLE> 
                                                             </div>`;
 }
 
-mostrarRepartidores();
-
-
 var miVentanaModal = document.getElementById("miVentanaModal");
 
 // Abre la ventana modal
-function abrirVentanaModal() {
+function abrirVentanaModal(id) {
   miVentanaModal.style.display = "block";
+  var produtos = []
+
+  for(let i=0; i<tiendas[id].productos.length; i++){
+      produtos +=  ` <div class="grid-item">
+                      <h2>${tiendas[id].productos[i].name}</h2>
+                      <img src="${tiendas[id].productos[i].imagen}" alt="">
+                      <p>${tiendas[id].productos[i].descripcion}</p>
+                      <p>$10</p>
+                  </div>`
+  }
+
+
+
+  document.getElementById('miVentanaModal').innerHTML = `<div class="modal-contenido">
+                                                        <span class="cerrar">&times;</span>
+                                                          <h2>Company details</h2>
+                                                          <div class="contenedor-modal">
+                                                              <div class="modal-img">
+                                                                  <img src="${tiendas[id].imagen}" alt="">
+                                                                  <div class="modal-inf">
+                                                                      <p><i class="fa-solid fa-building"></i> ${tiendas[id].name}</p>
+                                                                      <p><i class="fa-solid fa-id-card-clip"></i> ${tiendas[id]._id}</p>
+                                                                  </div>
+                                                                  <div class="botones">
+                                                                      <div>
+                                                                          <button onclick="abrirVentanaModalProducto()">Add product</button>
+                                                                      </div>
+                                                                      <div>
+                                                                          <button>Delete</button>
+                                                                      </div>
+                                                                      <div>
+                                                                          <button>Update</button>
+                                                                      </div>
+                                                                  </div>
+                                                              </div>
+                                                              <div class="modal-productos">
+                                                                  <div class="grid-container">
+
+                                                                     ${produtos}
+                                                                     
+                                                                    </div>
+                                                                    
+                                                              </div>
+                                                              
+                                                          </div>
+                                                      </div>`
+
+
 }
 
 // Cierra la ventana modal cuando se hace clic afuera de ella
@@ -114,7 +155,7 @@ botonCerrar.onclick = function() {
 }
 
 
-// para agragar una imagen al produco
+// para agragar una imagen al producto
 const inputImagen = document.getElementById("imagen");
 const imagenPreview = document.getElementById("preview");
 

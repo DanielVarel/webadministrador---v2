@@ -1,21 +1,22 @@
 var repartidoresRegistrados = [];
 
-function  obtenerRepartidorese(){
-    fetch(`http://localhost:8888/repartidores`, {
+function  obtenerRepartidores(){
+    fetch(`http://localhost:3000/dealers/all`, {
         method: 'get',
         headers: {"Content-Type": "application/json"},
       })
     .then((respuesta) => respuesta.json())
     .then((datos) => {
         repartidoresRegistrados = datos;
-        mostrarRepartidores()
+        console.log(repartidoresRegistrados)
+        mostrarRepartidores();
     })
     .catch(error => {
             console.log(error)
     }); 
 }
 
-obtenerRepartidorese();
+obtenerRepartidores();
 
 function mostrarRepartidores(){
     let tabla = ``;
@@ -85,7 +86,7 @@ function abrirVentanaModal(id) {
 
 // eliminar repartidor
 function eliminarRepartidor(id){
-    fetch(`http://localhost:8888/repartidores/${id}`, {
+    fetch(`http://localhost:3000/dealers/${id}`, {
         method: 'delete',
         headers: {"Content-Type": "application/json"},
       })
@@ -101,7 +102,7 @@ function eliminarRepartidor(id){
 
 // validar repartidor
 function  validarRepartidor(id){
-    fetch(`http://localhost:8888/repartidores/${id}`, {
+    fetch(`http://localhost:3000/dealers/${id}`, {
         method: 'PUT',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify()
